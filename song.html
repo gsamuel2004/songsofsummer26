@@ -1,0 +1,40 @@
+---
+layout: default
+---
+<article class="song-page">
+  <div class="song-page__top section-wrap">
+    <a class="back-link" href="{{ '/' | relative_url }}">← Back to all songs</a>
+    <div class="song-page__grid">
+      <div class="cover-frame">
+        <img src="{{ page.image | relative_url }}" alt="{{ page.image_alt | default: 'Placeholder artwork for ' | append: page.title }}" loading="eager">
+        <span class="cover-label">Replace image</span>
+      </div>
+      <div class="song-details">
+        <p class="eyebrow">No. {{ page.rank | prepend: "0" | slice: -2, 2 }} · Song of the summer</p>
+        <h1>{{ page.title }}</h1>
+        <p class="song-details__artist">{{ page.artist }}</p>
+        <div class="rating">
+          <span class="rating__label">Your rating</span>
+          <span class="rating__stars" aria-label="Rating placeholder">{{ page.rating | default: "☆ ☆ ☆ ☆ ☆" }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="review section-wrap">
+    <p class="eyebrow">Your review</p>
+    {{ content }}
+  </div>
+  <nav class="song-nav section-wrap" aria-label="Song navigation">
+    {% assign songs = site.songs | sort: "rank" %}
+    {% assign current_rank = page.rank | plus: 0 %}
+    {% assign previous_rank = current_rank | minus: 1 %}
+    {% assign next_rank = current_rank | plus: 1 %}
+    {% for song in songs %}
+      {% if song.rank == previous_rank %}<a href="{{ song.url | relative_url }}">← Previous</a>{% endif %}
+    {% endfor %}
+    <span>{{ page.rank }} / 10</span>
+    {% for song in songs %}
+      {% if song.rank == next_rank %}<a href="{{ song.url | relative_url }}">Next →</a>{% endif %}
+    {% endfor %}
+  </nav>
+</article>
